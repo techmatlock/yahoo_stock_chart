@@ -27,6 +27,11 @@ for each in data['quoteResponse']['result']:
 for each in data['quoteResponse']['result']:
     price_list.append(each['regularMarketPrice'])
 
+# Add title and axis names
+plt.title('Stock Prices')
+plt.xlabel('Symbols')
+plt.ylabel('Previous Close')
+
 plt.plot(stock_list, price_list)
 
 plt.show()
