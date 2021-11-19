@@ -13,13 +13,17 @@ headers = {
     }
 r = requests.get(url, headers=headers, params=querystring)
 
-# Process results and store as dictionary.
+# Process results.
 data = r.json()
 
 stock_list, price_list = [], []
 
-data['quoteResponse']['result'][0]['symbol'] # First symbol FB
-data['quoteResponse']['result'][1]['symbol'] # Second symbol AAPL
-data['quoteResponse']['result'][2]['symbol'] # Third symbol AMZN
-data['quoteResponse']['result'][3]['symbol'] # Fourth symbol NFLX
-data['quoteResponse']['result'][4]['symbol'] # Fifth symbol GOOG
+# Iterate through 'result' list and append stock symbols
+# to stock_list
+for each in data['quoteResponse']['result']:
+    stock_list.append(each['symbol'])
+
+new_stock_lst = ", ".join(stock_list)
+
+for each in data['quoteResponse']['result']:
+    price_list.append(each['regularMarketPrice'])
