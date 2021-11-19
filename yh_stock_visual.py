@@ -1,8 +1,7 @@
 import requests
 from config import *
 
-from plotly.graph_objs import Bar
-from plotly import offline
+import matplotlib.pyplot as plt
 
 url = "https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote"
 querystring = {"symbols":"FB,AAPL,AMZN,NFLX,GOOG"}
@@ -28,18 +27,6 @@ for each in data['quoteResponse']['result']:
 for each in data['quoteResponse']['result']:
     price_list.append(each['regularMarketPrice'])
 
-# Make visualization.
-vis_data = [{
-    'type': 'bar',
-    'x': stock_list,
-    'y': price_list,
-}]
+plt.plot(stock_list, price_list)
 
-my_layout = {
-    'title': 'FAANG Stock Prices',
-    'xaxis': {'title': 'Stock Symbol'},
-    'yaxis': {'title': 'Stock Price'},
-}
-
-fig = {'data': vis_data, 'layout': my_layout}
-offline.plot(fig, filename='yahoo_stock_chart.html')
+plt.show()
