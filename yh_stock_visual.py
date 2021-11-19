@@ -1,8 +1,10 @@
 import requests
 from config import *
 
-url = "https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote"
+from plotly.graph_objs import Bar
+from plotly import offline
 
+url = "https://stock-data-yahoo-finance-alternative.p.rapidapi.com/v6/finance/quote"
 querystring = {"symbols":"FB,AAPL,AMZN,NFLX,GOOG"}
 
 # Make API call and store the response.
@@ -18,12 +20,26 @@ data = r.json()
 
 stock_list, price_list = [], []
 
-# Iterate through 'result' list and append stock symbols
+# Iterate through 'result' list and add stock symbols
 # to stock_list
 for each in data['quoteResponse']['result']:
     stock_list.append(each['symbol'])
 
-new_stock_lst = ", ".join(stock_list)
-
 for each in data['quoteResponse']['result']:
     price_list.append(each['regularMarketPrice'])
+
+# Make visualization.
+vis_data = [{
+    'type': 'bar',
+    'x': stock_list,
+    'y': price_list,
+}]
+
+my_layout = {
+    'title': 'FAANG Stock Prices',
+    'xaxis': {'title': 'Stock Symbol'},
+    'yaxis': {'title': 'Stock Price'},
+}
+
+fig = {'data': vis_data, 'layout': my_layout}
+offline.plot(fig, filename='yahoo_stock_chart.html')
